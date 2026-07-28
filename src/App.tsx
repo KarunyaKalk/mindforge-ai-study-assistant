@@ -52,8 +52,11 @@ export default function App() {
     }
   }, [darkMode]);
 
+  const [showInputSection, setShowInputSection] = useState<boolean>(false);
+
   const handleFormSubmit = (prompt: string, options?: { simulateFailure?: boolean; forcedErrorType?: string }) => {
     setLastSubmittedPrompt(prompt);
+    setShowInputSection(false);
     createStudySet(prompt, options);
   };
 
@@ -82,8 +85,8 @@ export default function App() {
           <ErrorAlert error={errorDetail} onRetry={handleRetry} onDismiss={clearError} />
         )}
 
-        {/* Input Section (Always available if no set or requested) */}
-        {!activeStudySet && !isLoading && (
+        {/* Input Section (Always available if toggled or no active set) */}
+        {(showInputSection || !activeStudySet) && !isLoading && (
           <InputSection onSubmit={handleFormSubmit} isLoading={isLoading} />
         )}
 
@@ -119,14 +122,13 @@ export default function App() {
 
               <button
                 onClick={() => {
+                  setShowInputSection((prev) => !prev);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
-                  // Clear active set to return to input prompt view
-                  loadSavedSession(null);
                 }}
                 className="shrink-0 flex items-center space-x-2 px-4 py-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs transition"
               >
                 <PlusCircle className="w-4 h-4 text-brand-500" />
-                <span>New Topic</span>
+                <span>{showInputSection ? 'Close Input' : 'New Topic'}</span>
               </button>
             </div>
 

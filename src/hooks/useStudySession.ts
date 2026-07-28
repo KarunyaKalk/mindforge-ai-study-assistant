@@ -3,9 +3,13 @@ import { StudySet, FailureDetail, QuizResult } from '../types/study';
 import { generateStudySet, refineStudySet } from '../services/aiService';
 import { useLocalStorage } from './useLocalStorage';
 
+import { generateMockStudySet } from '../services/mockGenerator';
+
+const DEFAULT_SET = generateMockStudySet('React 18 & Frontend Architecture');
+
 export function useStudySession() {
-  const [activeStudySet, setActiveStudySet] = useState<StudySet | null>(null);
-  const [savedHistory, setSavedHistory] = useLocalStorage<StudySet[]>('mindforge_study_history', []);
+  const [activeStudySet, setActiveStudySet] = useState<StudySet | null>(DEFAULT_SET);
+  const [savedHistory, setSavedHistory] = useLocalStorage<StudySet[]>('mindforge_study_history', [DEFAULT_SET]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isRefining, setIsRefining] = useState<boolean>(false);
   const [errorDetail, setErrorDetail] = useState<FailureDetail | null>(null);
@@ -14,7 +18,7 @@ export function useStudySession() {
   // Active quiz state
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
   const [quizCompleted, setQuizCompleted] = useState<boolean>(false);
-  const [activeQuizQuestions, setActiveQuizQuestions] = useState<any[]>([]);
+  const [activeQuizQuestions, setActiveQuizQuestions] = useState<any[]>(DEFAULT_SET.quiz);
   const [isReTestingWrong, setIsReTestingWrong] = useState<boolean>(false);
 
   // AbortController reference for request cancellation
