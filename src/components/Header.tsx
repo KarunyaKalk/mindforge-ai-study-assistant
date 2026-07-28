@@ -50,8 +50,8 @@ export const Header: React.FC<HeaderProps> = ({
           <div
             title={
               isMockMode
-                ? 'Running with local mock generator. Set GEMINI_API_KEY for live AI calls.'
-                : 'Connected to live Gemini AI API server proxy'
+                ? 'Running with local mock generator. Set GROQ_API_KEY for live AI calls.'
+                : 'Connected to live Groq AI API server proxy (Llama 3.3)'
             }
             className={`hidden sm:flex items-center space-x-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium font-mono border ${
               isMockMode
@@ -60,7 +60,7 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             {isMockMode ? <Cpu className="w-3.5 h-3.5" /> : <ShieldCheck className="w-3.5 h-3.5" />}
-            <span>{isMockMode ? 'Mock Engine' : 'Live Gemini'}</span>
+            <span>{isMockMode ? 'Mock Engine' : 'Live Groq AI'}</span>
           </div>
 
           {/* History Drawer Trigger */}

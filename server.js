@@ -18,17 +18,18 @@ app.use(express.json({ limit: '10mb' }));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  const apiKeyPresent = !!process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim() !== '';
+  const apiKeyPresent = !!(process.env.GROQ_API_KEY || process.env.GEMINI_API_KEY);
   res.json({
     status: 'ok',
+    provider: 'Groq AI (Llama 3.3)',
     apiKeyConfigured: apiKeyPresent,
     mode: apiKeyPresent ? 'real_ai' : 'fallback_mock',
-    model: process.env.GEMINI_MODEL || 'gemini-1.5-flash',
+    model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
   });
 });
 
 /**
- * Proxy endpoint to request structured JSON from Gemini API
+ * Proxy endpoint to request structured JSON from Groq API (OpenAI Compatible)
  */
 app.post('/api/generate', async (req, res) => {
   try {
@@ -54,22 +55,21 @@ app.post('/api/generate', async (req, res) => {
         });
       }
       if (forcedErrorType === 'SERVER_500') {
-        return res.status(500).json({ error: 'Simulated 500 Server Error from LLM API' });
+        return res.status(500).json({ error: 'Simulated 500 Server Error from Groq API' });
       }
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY || process.env.GEMINI_API_KEY;
 
     if (!apiKey || apiKey.trim() === '') {
-      // Return a flag indicating fallback mock mode should be used by client or return signal
       return res.json({
         useMockFallback: true,
-        message: 'No GEMINI_API_KEY provided in .env server environment. Using high-quality local mock generator.',
+        message: 'No GROQ_API_KEY provided in .env server environment. Using high-quality local mock generator.',
       });
     }
 
-    const modelName = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+    const modelName = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+    const groqApiUrl = 'https://api.groq.com/openai/v1/chat/completions';
 
     const systemInstruction = `You are MindForge AI, an expert educational system.
 Generate a structured JSON study package for the requested topic/notes.
@@ -112,44 +112,40 @@ Your output MUST be strictly valid JSON matching this structure:
 Ensure at least 5 flashcards, 4 quiz questions (each with 4 options), and 4 key concepts. Return ONLY raw JSON with no conversational text or preamble.`;
 
     const requestBody = {
-      contents: [
-        {
-          role: 'user',
-          parts: [
-            {
-              text: `${systemInstruction}\n\nUSER INPUT / TOPIC NOTES:\n${prompt}`,
-            },
-          ],
-        },
+      model: modelName,
+      messages: [
+        { role: 'system', content: systemInstruction },
+        { role: 'user', content: `USER INPUT / TOPIC NOTES:\n${prompt}` },
       ],
-      generationConfig: {
-        responseMimeType: 'application/json',
-        temperature: 0.7,
-      },
+      response_format: { type: 'json_object' },
+      temperature: 0.7,
     };
 
-    const response = await fetch(apiUrl, {
+    const response = await fetch(groqApiUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Gemini API Error:', response.status, errorText);
+      console.error('Groq API Error:', response.status, errorText);
       return res.status(response.status).json({
-        error: `Gemini API returned error code ${response.status}`,
+        error: `Groq API returned error code ${response.status}`,
         details: errorText,
       });
     }
 
     const data = await response.json();
-    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    const rawText = data.choices?.[0]?.message?.content;
 
     if (!rawText) {
       return res.status(502).json({
-        error: 'Empty response received from LLM model',
-        details: 'The AI model returned candidates without valid content parts.',
+        error: 'Empty response received from Groq AI model',
+        details: 'The AI model returned choices without valid content parts.',
       });
     }
 
@@ -157,14 +153,14 @@ Ensure at least 5 flashcards, 4 quiz questions (each with 4 options), and 4 key 
   } catch (err) {
     console.error('Error in /api/generate server handler:', err);
     return res.status(500).json({
-      error: 'Internal server error while communicating with AI provider',
+      error: 'Internal server error while communicating with Groq API provider',
       details: err instanceof Error ? err.message : String(err),
     });
   }
 });
 
 /**
- * Proxy endpoint to refine existing study content with follow-up instructions
+ * Proxy endpoint to refine existing study content with follow-up instructions using Groq API
  */
 app.post('/api/refine', async (req, res) => {
   try {
@@ -177,61 +173,53 @@ app.post('/api/refine', async (req, res) => {
       });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY || process.env.GEMINI_API_KEY;
 
     if (!apiKey || apiKey.trim() === '') {
       return res.json({
         useMockFallback: true,
-        message: 'No GEMINI_API_KEY configured. Client will perform mock refinement.',
+        message: 'No GROQ_API_KEY configured. Client will perform mock refinement.',
       });
     }
 
-    const modelName = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+    const modelName = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+    const groqApiUrl = 'https://api.groq.com/openai/v1/chat/completions';
 
-    const promptText = `You are MindForge AI refinement engine.
-Below is an existing JSON Study Set:
-${JSON.stringify(existingStudySet, null, 2)}
+    const systemInstruction = `You are MindForge AI refinement engine.
+Return an UPDATED complete JSON Study Set incorporating the user's requested changes.
+Maintain exact structure with keys: title, summary, difficulty, category, estimatedTimeMinutes, flashcards, quiz, keyConcepts. Return ONLY raw JSON.`;
 
-The user requests the following update/refinement:
-"${refinementPrompt}"
-
-Return an UPDATED complete JSON Study Set incorporating the user's requested changes (e.g., adding/modifying flashcards, modifying quiz questions, adjust difficulty).
-Maintain the exact structure:
-{
-  "title": string,
-  "summary": string,
-  "difficulty": string,
-  "category": string,
-  "estimatedTimeMinutes": number,
-  "flashcards": Array<{ id, question, answer, hint, category, difficulty }>,
-  "quiz": Array<{ id, question, options, correctOptionIndex, explanation, difficulty }>,
-  "keyConcepts": Array<{ term, definition, importance }>
-}
-
-Return ONLY raw JSON with no conversational commentary.`;
+    const userPrompt = `Below is an existing JSON Study Set:\n${JSON.stringify(existingStudySet, null, 2)}\n\nRefinement Request:\n"${refinementPrompt}"`;
 
     const requestBody = {
-      contents: [{ role: 'user', parts: [{ text: promptText }] }],
-      generationConfig: { responseMimeType: 'application/json', temperature: 0.7 },
+      model: modelName,
+      messages: [
+        { role: 'system', content: systemInstruction },
+        { role: 'user', content: userPrompt },
+      ],
+      response_format: { type: 'json_object' },
+      temperature: 0.7,
     };
 
-    const response = await fetch(apiUrl, {
+    const response = await fetch(groqApiUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
       return res.status(response.status).json({
-        error: `Gemini API returned code ${response.status}`,
+        error: `Groq API returned code ${response.status}`,
         details: errorText,
       });
     }
 
     const data = await response.json();
-    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    const rawText = data.choices?.[0]?.message?.content;
 
     return res.json({ rawText, useMockFallback: false });
   } catch (err) {
@@ -257,7 +245,7 @@ app.get('*', (req, res) => {
       <html>
         <head><title>MindForge AI Backend Server</title></head>
         <body style="font-family: sans-serif; padding: 2rem; line-height: 1.6;">
-          <h2>🚀 MindForge API Server is Running</h2>
+          <h2>🚀 MindForge API Server (Groq Llama 3.3 Engine)</h2>
           <p>Backend API endpoints (<code>/api/generate</code>, <code>/api/refine</code>, <code>/api/health</code>) are ready.</p>
           <p>To view the React frontend UI, run <code>npm run dev</code> for Vite dev mode or <code>npm run build</code> to generate static assets in <code>dist/</code>.</p>
         </body>
@@ -268,5 +256,5 @@ app.get('*', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`🚀 MindForge API Proxy Server listening on port ${PORT}`);
-  console.log(`🔑 Gemini API Key configured: ${process.env.GEMINI_API_KEY ? 'YES' : 'NO (Mock Mode Enabled)'}`);
+  console.log(`🔑 Groq API Key configured: ${process.env.GROQ_API_KEY || process.env.GEMINI_API_KEY ? 'YES' : 'NO (Mock Mode Enabled)'}`);
 });
