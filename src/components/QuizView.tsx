@@ -29,33 +29,33 @@ export const QuizView: React.FC<QuizViewProps> = ({
   const results = quizCompleted ? onSubmitQuiz() : null;
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-6">
+    <div className="w-full max-w-4xl mx-auto space-y-5">
       {/* Banner / Header */}
-      <div className="bg-white dark:bg-navy-900 rounded-3xl p-6 border border-slate-200 dark:border-navy-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2">
-            <h3 className="text-xl font-black text-navy-950 dark:text-white">
-              {isReTestingWrong ? 'Re-Testing Wrong Answers' : 'Interactive Assessment Quiz'}
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+              {isReTestingWrong ? 'Re-Testing Wrong Answers' : 'Assessment Quiz'}
             </h3>
             {isReTestingWrong && (
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300">
+              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300">
                 Focus Mode
               </span>
             )}
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Test your understanding. Select options to reveal instant explanations.
+          <p className="text-xs text-slate-500 mt-0.5">
+            Select an option to evaluate knowledge and view instant explanations.
           </p>
         </div>
 
         <div className="flex items-center space-x-3">
-          <div className="text-xs font-mono font-bold text-navy-900 dark:text-slate-200 bg-slate-100 dark:bg-navy-950 px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-navy-800">
+          <div className="text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-[#070b14] px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800">
             Answered: {answeredCount} / {questions.length}
           </div>
           {isReTestingWrong && (
             <button
               onClick={onResetFullQuiz}
-              className="text-xs font-extrabold text-accent-600 dark:text-accent-400 hover:underline"
+              className="text-xs font-semibold text-yellow-600 dark:text-yellow-400 hover:underline"
             >
               Reset Full Quiz
             </button>
@@ -65,40 +65,40 @@ export const QuizView: React.FC<QuizViewProps> = ({
 
       {/* Final Results Summary Card if Completed */}
       {quizCompleted && results && (
-        <div className="bg-navy-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-accent-400/40 relative overflow-hidden">
+        <div className="bg-[#0f172a] text-white rounded-2xl p-6 shadow-md border border-yellow-400/40 relative overflow-hidden">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 rounded-2xl bg-accent-400 text-navy-950 flex items-center justify-center text-3xl font-black border border-accent-300 shadow-lg shadow-accent-400/20">
-                <Award className="w-8 h-8 text-navy-950" />
+              <div className="w-14 h-14 rounded-xl bg-yellow-400 text-slate-950 flex items-center justify-center text-2xl font-extrabold border border-yellow-300">
+                <Award className="w-7 h-7 text-slate-950" />
               </div>
               <div>
-                <h4 className="text-2xl font-black tracking-tight text-white">
-                  Quiz Score: {results.scorePercentage}%
+                <h4 className="text-xl font-bold tracking-tight text-white">
+                  Score: {results.scorePercentage}%
                 </h4>
-                <p className="text-sm text-slate-300 mt-0.5">
-                  You got {results.correctAnswers} out of {results.totalQuestions} questions correct.
+                <p className="text-xs text-slate-300 mt-0.5">
+                  {results.correctAnswers} out of {results.totalQuestions} questions correct.
                 </p>
               </div>
             </div>
 
-            {/* Actions: Re-test Wrong Answers button */}
-            <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+            {/* Actions */}
+            <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
               {results.wrongQuestionIds.length > 0 && (
                 <button
                   onClick={() => onRetestWrongAnswers(results.wrongQuestionIds)}
-                  className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 px-5 py-3 rounded-2xl bg-amber-400 hover:bg-amber-300 text-navy-950 font-black text-xs shadow-lg transition"
+                  className="sde-button-primary"
                 >
-                  <RotateCcw className="w-4 h-4 text-navy-950" />
-                  <span>Re-test Wrong Answers ({results.wrongQuestionIds.length})</span>
+                  <RotateCcw className="w-3.5 h-3.5 text-slate-950" />
+                  <span>Re-test Wrong ({results.wrongQuestionIds.length})</span>
                 </button>
               )}
 
               <button
                 onClick={onResetFullQuiz}
-                className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition"
+                className="sde-button-secondary"
               >
-                <RotateCcw className="w-4 h-4" />
-                <span>Retake Entire Quiz</span>
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Retake Quiz</span>
               </button>
             </div>
           </div>
@@ -106,7 +106,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
       )}
 
       {/* Questions List */}
-      <div className="space-y-6">
+      <div className="space-y-4">
         {questions.map((q, qIndex) => {
           const selectedOption = quizAnswers[q.id];
           const hasAnswered = selectedOption !== undefined;
@@ -115,29 +115,29 @@ export const QuizView: React.FC<QuizViewProps> = ({
           return (
             <div
               key={q.id}
-              className={`bg-white dark:bg-navy-900 rounded-3xl p-6 border transition shadow-sm ${
+              className={`bg-white dark:bg-[#0f172a] rounded-2xl p-5 border transition shadow-sm ${
                 hasAnswered
                   ? isCorrect
-                    ? 'border-emerald-500/50 bg-emerald-50/20 dark:bg-emerald-950/20'
-                    : 'border-red-500/50 bg-red-50/20 dark:bg-red-950/20'
-                  : 'border-slate-200 dark:border-navy-800'
+                    ? 'border-emerald-500/50 bg-emerald-50/10 dark:bg-emerald-950/10'
+                    : 'border-red-500/50 bg-red-50/10 dark:bg-red-950/10'
+                  : 'border-slate-200/80 dark:border-slate-800'
               }`}
             >
-              <div className="flex items-start justify-between gap-3 mb-4">
-                <h4 className="text-base sm:text-lg font-black text-navy-950 dark:text-white flex items-start space-x-2">
-                  <span className="text-accent-600 dark:text-accent-400 font-mono">Q{qIndex + 1}.</span>
+              <div className="flex items-start justify-between gap-3 mb-3.5">
+                <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-start space-x-2">
+                  <span className="text-yellow-600 dark:text-yellow-400 font-mono text-xs mt-0.5">Q{qIndex + 1}.</span>
                   <span>{q.question}</span>
                 </h4>
                 {hasAnswered && (
                   <div className="shrink-0">
                     {isCorrect ? (
-                      <span className="flex items-center space-x-1 text-xs font-bold text-emerald-700 dark:text-emerald-300 px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800">
-                        <CheckCircle className="w-3.5 h-3.5" />
+                      <span className="flex items-center space-x-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800">
+                        <CheckCircle className="w-3 h-3" />
                         <span>Correct</span>
                       </span>
                     ) : (
-                      <span className="flex items-center space-x-1 text-xs font-bold text-red-700 dark:text-red-300 px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-950 border border-red-300 dark:border-red-800">
-                        <XCircle className="w-3.5 h-3.5" />
+                      <span className="flex items-center space-x-1 text-[11px] font-bold text-red-700 dark:text-red-300 px-2 py-0.5 rounded bg-red-100 dark:bg-red-950 border border-red-300 dark:border-red-800">
+                        <XCircle className="w-3 h-3" />
                         <span>Incorrect</span>
                       </span>
                     )}
@@ -146,13 +146,13 @@ export const QuizView: React.FC<QuizViewProps> = ({
               </div>
 
               {/* Options Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-3">
                 {q.options.map((option, optIdx) => {
                   const isSelected = selectedOption === optIdx;
                   const isRightAnswer = optIdx === q.correctOptionIndex;
 
                   let optionStyle =
-                    'bg-slate-50 dark:bg-navy-950 border-slate-200 dark:border-navy-800 text-navy-900 dark:text-slate-200 hover:border-accent-400';
+                    'bg-slate-50 dark:bg-[#070b14] border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-200 hover:border-yellow-400';
 
                   if (hasAnswered) {
                     if (isRightAnswer) {
@@ -168,17 +168,17 @@ export const QuizView: React.FC<QuizViewProps> = ({
                     <button
                       key={optIdx}
                       onClick={() => onAnswerQuestion(q.id, optIdx)}
-                      className={`text-left p-3.5 rounded-2xl border text-xs transition flex items-center justify-between ${optionStyle}`}
+                      className={`text-left p-3 rounded-xl border text-xs transition flex items-center justify-between ${optionStyle}`}
                     >
                       <div className="flex items-center space-x-2.5">
-                        <span className="w-6 h-6 rounded-lg bg-slate-200 dark:bg-navy-800 flex items-center justify-center font-mono font-bold text-[11px] shrink-0">
+                        <span className="w-5 h-5 rounded bg-slate-200 dark:bg-slate-800 flex items-center justify-center font-mono font-bold text-[10px] shrink-0">
                           {String.fromCharCode(65 + optIdx)}
                         </span>
                         <span>{option}</span>
                       </div>
-                      {hasAnswered && isRightAnswer && <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />}
+                      {hasAnswered && isRightAnswer && <CheckCircle className="w-3.5 h-3.5 text-emerald-500 shrink-0" />}
                       {hasAnswered && isSelected && !isRightAnswer && (
-                        <XCircle className="w-4 h-4 text-red-500 shrink-0" />
+                        <XCircle className="w-3.5 h-3.5 text-red-500 shrink-0" />
                       )}
                     </button>
                   );
@@ -187,10 +187,10 @@ export const QuizView: React.FC<QuizViewProps> = ({
 
               {/* Explanation Box */}
               {hasAnswered && (
-                <div className="p-3.5 rounded-2xl bg-slate-100 dark:bg-navy-950 text-xs text-navy-900 dark:text-slate-300 border border-slate-200 dark:border-navy-800 flex items-start space-x-2">
-                  <HelpCircle className="w-4 h-4 text-accent-500 shrink-0 mt-0.5" />
+                <div className="p-3 rounded-xl bg-slate-100 dark:bg-[#070b14] text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 flex items-start space-x-2">
+                  <HelpCircle className="w-3.5 h-3.5 text-yellow-500 shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-bold text-navy-950 dark:text-white">Explanation: </span>
+                    <span className="font-bold text-slate-900 dark:text-white">Explanation: </span>
                     {q.explanation}
                   </div>
                 </div>
@@ -200,16 +200,16 @@ export const QuizView: React.FC<QuizViewProps> = ({
         })}
       </div>
 
-      {/* Submit Button (Soft Yellow CTA) */}
+      {/* Submit Button */}
       {!quizCompleted && (
-        <div className="flex justify-end pt-2">
+        <div className="flex justify-end pt-1">
           <button
             onClick={onSubmitQuiz}
             disabled={!isAllAnswered}
-            className="flex items-center space-x-2 px-6 py-3 bg-accent-400 hover:bg-accent-300 text-navy-950 font-black text-sm rounded-2xl shadow-lg shadow-accent-400/20 border border-accent-300 disabled:opacity-50 disabled:cursor-not-allowed transition"
+            className="sde-button-primary"
           >
-            <span>Complete Quiz & View Analysis</span>
-            <ArrowRight className="w-4 h-4 text-navy-950" />
+            <span>Complete Quiz</span>
+            <ArrowRight className="w-3.5 h-3.5 text-slate-950" />
           </button>
         </div>
       )}

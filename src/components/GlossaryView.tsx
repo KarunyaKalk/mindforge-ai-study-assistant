@@ -23,46 +23,46 @@ export const GlossaryView: React.FC<GlossaryViewProps> = ({ concepts }) => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-6">
+    <div className="w-full max-w-4xl mx-auto space-y-5">
       {/* Header & Search */}
-      <div className="bg-white dark:bg-navy-900 rounded-3xl p-6 border border-slate-200 dark:border-navy-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2">
-            <BookMarked className="w-5 h-5 text-accent-500" />
-            <h3 className="text-xl font-black text-navy-950 dark:text-white">Key Concepts & Terminology</h3>
+            <BookMarked className="w-4 h-4 text-yellow-500" />
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Key Concepts & Terms</h3>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Essential definitions, core principles, and technical keywords extracted from your input.
+          <p className="text-xs text-slate-500 mt-0.5">
+            Essential definitions and domain vocabulary extracted from source notes.
           </p>
         </div>
 
         {/* Search Bar */}
         <div className="relative w-full sm:w-64">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search key terms..."
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-50 dark:bg-navy-950 border border-slate-200 dark:border-navy-800 text-xs text-navy-950 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-accent-400"
+            placeholder="Search terms..."
+            className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-slate-50 dark:bg-[#070b14] border border-slate-200/80 dark:border-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-yellow-400"
           />
         </div>
       </div>
 
       {/* Grid of Concept Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
         {filteredConcepts.map((item, index) => (
           <div
             key={index}
-            className="bg-white dark:bg-navy-900 rounded-2xl p-5 border border-slate-200 dark:border-navy-800 shadow-sm hover:border-accent-400/60 transition group flex flex-col justify-between"
+            className="bg-white dark:bg-[#0f172a] rounded-xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-yellow-400/60 transition group flex flex-col justify-between"
           >
             <div>
-              <div className="flex items-center justify-between gap-2 mb-2">
-                <h4 className="font-black text-base text-navy-950 dark:text-white group-hover:text-accent-600 dark:group-hover:text-accent-400 transition">
+              <div className="flex items-center justify-between gap-2 mb-1.5">
+                <h4 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition">
                   {item.term}
                 </h4>
                 {item.importance && (
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-800 dark:bg-navy-950 dark:text-slate-300 border border-slate-200 dark:border-navy-800">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                     {item.importance}
                   </span>
                 )}
@@ -73,10 +73,10 @@ export const GlossaryView: React.FC<GlossaryViewProps> = ({ concepts }) => {
               </p>
             </div>
 
-            <div className="pt-4 mt-3 border-t border-slate-100 dark:border-navy-800 flex items-center justify-end">
+            <div className="pt-3 mt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-end">
               <button
                 onClick={() => handleCopy(item.term, item.definition)}
-                className="text-xs text-slate-400 hover:text-accent-600 dark:hover:text-accent-400 flex items-center space-x-1 transition"
+                className="text-xs text-slate-400 hover:text-yellow-500 flex items-center space-x-1 transition"
                 title="Copy term and definition"
               >
                 {copiedTerm === item.term ? (

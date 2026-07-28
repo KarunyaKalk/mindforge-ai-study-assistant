@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, BookOpen, AlertTriangle, Play, RefreshCw, Zap } from 'lucide-react';
+import { BookOpen, AlertTriangle, Play, RefreshCw, Zap } from 'lucide-react';
 
 interface InputSectionProps {
   onSubmit: (prompt: string, options?: { simulateFailure?: boolean; forcedErrorType?: string }) => void;
@@ -49,20 +49,17 @@ export const InputSection: React.FC<InputSectionProps> = ({ onSubmit, isLoading 
 
   return (
     <div className="w-full max-w-4xl mx-auto mb-8">
-      <div className="bg-white dark:bg-navy-900 rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/60 dark:shadow-none border border-slate-200 dark:border-navy-800 relative overflow-hidden transition-all">
-        {/* Subtle Accents */}
-        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-48 h-48 bg-accent-400/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="flex items-center space-x-2 text-accent-700 dark:text-accent-400 font-extrabold text-xs uppercase tracking-wider mb-2">
-          <BookOpen className="w-4 h-4" />
-          <span>Input Lecture Notes, Articles, or Study Topics</span>
+      <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-sm transition">
+        <div className="flex items-center space-x-2 text-slate-500 dark:text-slate-400 font-mono text-[11px] uppercase tracking-wider mb-2">
+          <BookOpen className="w-3.5 h-3.5" />
+          <span>Source Input & Context</span>
         </div>
 
-        <h2 className="text-2xl sm:text-3xl font-black text-navy-950 dark:text-white tracking-tight mb-3">
-          What would you like to master today?
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight mb-2">
+          Enter lecture notes, code, or study topic
         </h2>
-        <p className="text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed">
-          Paste lecture notes, code snippets, or a topic description. Our AI transforms it into structured 3D flashcards, an interactive quiz, and key concepts.
+        <p className="text-slate-600 dark:text-slate-400 text-xs mb-5">
+          MindForge parses your prompt into schema-validated 3D flashcards, interactive quizzes, and key terms.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -71,34 +68,34 @@ export const InputSection: React.FC<InputSectionProps> = ({ onSubmit, isLoading 
               rows={4}
               value={inputPrompt}
               onChange={(e) => setInputPrompt(e.target.value)}
-              placeholder="e.g. Paste lecture notes on React reconciliation and hooks, or type 'System Design Caching'..."
+              placeholder="e.g. Paste notes on React 18 hooks, or type 'System Design Caching'..."
               disabled={isLoading}
-              className="w-full p-4 rounded-2xl bg-slate-50 dark:bg-navy-950 border border-slate-200 dark:border-navy-800 text-navy-950 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-accent-400 focus:border-transparent transition duration-200 resize-y min-h-[110px]"
+              className="w-full p-3.5 rounded-xl bg-slate-50 dark:bg-[#070b14] border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder-slate-400 text-xs focus:outline-none focus:ring-1 focus:ring-yellow-400 focus:border-yellow-400 transition min-h-[100px]"
             />
 
-            <div className="absolute bottom-3 right-3 flex items-center space-x-2">
-              <span className="text-xs text-slate-400 font-mono">
+            <div className="absolute bottom-2.5 right-3">
+              <span className="text-[10px] text-slate-400 font-mono">
                 {inputPrompt.length} chars
               </span>
             </div>
           </div>
 
           {/* Action Row */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2">
-            {/* Failure Mode Demo Dropdown for Intern Evaluation */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1">
+            {/* Failure Mode Demo Dropdown */}
             <div className="relative">
               <button
                 type="button"
                 onClick={() => setShowFailureDemoMenu(!showFailureDemoMenu)}
-                className="flex items-center justify-center space-x-1.5 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-800 dark:bg-navy-800 dark:text-slate-200 border border-slate-200 dark:border-navy-700 hover:bg-slate-200 transition"
+                className="flex items-center justify-center space-x-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition"
               >
-                <AlertTriangle className="w-4 h-4 text-amber-500" />
+                <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
                 <span>Test Failure Handling</span>
               </button>
 
               {showFailureDemoMenu && (
-                <div className="absolute left-0 mt-2 w-64 bg-white dark:bg-navy-900 rounded-2xl shadow-xl border border-slate-200 dark:border-navy-700 p-2 z-20 space-y-1">
-                  <div className="px-3 py-1 text-[11px] font-bold uppercase text-slate-400 tracking-wider">
+                <div className="absolute left-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-2 z-20 space-y-1">
+                  <div className="px-2.5 py-1 text-[10px] font-mono font-bold uppercase text-slate-400">
                     Simulate Bad AI Output
                   </div>
                   <button
@@ -107,10 +104,10 @@ export const InputSection: React.FC<InputSectionProps> = ({ onSubmit, isLoading 
                       setShowFailureDemoMenu(false);
                       handleSimulateFailure('MALFORMED_JSON');
                     }}
-                    className="w-full text-left px-3 py-2 text-xs rounded-xl hover:bg-slate-100 dark:hover:bg-navy-800 text-slate-800 dark:text-slate-200 flex items-center space-x-2"
+                    className="w-full text-left px-2.5 py-2 text-xs rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center space-x-2"
                   >
                     <span className="w-2 h-2 rounded-full bg-red-500"></span>
-                    <span>Malformed JSON Output</span>
+                    <span>Malformed JSON</span>
                   </button>
                   <button
                     type="button"
@@ -118,10 +115,10 @@ export const InputSection: React.FC<InputSectionProps> = ({ onSubmit, isLoading 
                       setShowFailureDemoMenu(false);
                       handleSimulateFailure('WRONG_SHAPE');
                     }}
-                    className="w-full text-left px-3 py-2 text-xs rounded-xl hover:bg-slate-100 dark:hover:bg-navy-800 text-slate-800 dark:text-slate-200 flex items-center space-x-2"
+                    className="w-full text-left px-2.5 py-2 text-xs rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center space-x-2"
                   >
                     <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-                    <span>Schema Mismatch / Wrong Shape</span>
+                    <span>Schema Mismatch</span>
                   </button>
                   <button
                     type="button"
@@ -129,61 +126,60 @@ export const InputSection: React.FC<InputSectionProps> = ({ onSubmit, isLoading 
                       setShowFailureDemoMenu(false);
                       handleSimulateFailure('SERVER_500');
                     }}
-                    className="w-full text-left px-3 py-2 text-xs rounded-xl hover:bg-slate-100 dark:hover:bg-navy-800 text-slate-800 dark:text-slate-200 flex items-center space-x-2"
+                    className="w-full text-left px-2.5 py-2 text-xs rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center space-x-2"
                   >
                     <span className="w-2 h-2 rounded-full bg-purple-500"></span>
-                    <span>HTTP 500 Server Failure</span>
+                    <span>HTTP 500 Failure</span>
                   </button>
                 </div>
               )}
             </div>
 
-            {/* Primary Generate Button (Soft Yellow 10% Pop Accent) */}
+            {/* Primary Generate Button */}
             <button
               type="submit"
               disabled={isLoading || !inputPrompt.trim()}
-              className="flex items-center justify-center space-x-2 px-6 py-3 rounded-2xl bg-accent-400 hover:bg-accent-300 text-navy-950 font-black text-sm shadow-lg shadow-accent-400/20 disabled:opacity-50 disabled:cursor-not-allowed transition transform active:scale-98 border border-accent-300"
+              className="sde-button-primary"
             >
               {isLoading ? (
                 <>
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Synthesizing Study Package...</span>
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                  <span>Generating Study Suite...</span>
                 </>
               ) : (
                 <>
-                  <Zap className="w-4 h-4 text-navy-950 fill-navy-950" />
-                  <span>Generate Study Package</span>
+                  <Zap className="w-3.5 h-3.5 fill-slate-950" />
+                  <span>Generate Study Suite</span>
                 </>
               )}
             </button>
           </div>
         </form>
 
-        {/* Preset Prompt Suggestions */}
-        <div className="mt-6 pt-5 border-t border-slate-100 dark:border-navy-800">
-          <div className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-3 flex items-center space-x-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-accent-500" />
-            <span>Try one of these sample topics:</span>
+        {/* Presets */}
+        <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800/80">
+          <div className="text-[11px] font-mono text-slate-400 mb-2.5">
+            Quick Preset Topics:
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {PRESET_TOPICS.map((preset, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => handleSelectPreset(preset.prompt)}
                 disabled={isLoading}
-                className="text-left p-3.5 rounded-xl bg-slate-50 dark:bg-navy-950 border border-slate-200 dark:border-navy-800 hover:border-accent-400 dark:hover:border-accent-400 transition group flex items-start justify-between"
+                className="text-left p-3 rounded-xl bg-slate-50 dark:bg-[#070b14] border border-slate-200/80 dark:border-slate-800 hover:border-yellow-400 transition group flex items-start justify-between"
               >
                 <div>
-                  <div className="font-bold text-xs text-navy-900 dark:text-slate-100 group-hover:text-accent-600 dark:group-hover:text-accent-400">
+                  <div className="font-semibold text-xs text-slate-800 dark:text-slate-200 group-hover:text-yellow-600 dark:group-hover:text-yellow-400">
                     {preset.title}
                   </div>
                   <div className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
                     {preset.prompt}
                   </div>
                 </div>
-                <Play className="w-3.5 h-3.5 text-slate-400 group-hover:text-accent-500 transition mt-0.5 shrink-0 ml-2" />
+                <Play className="w-3.5 h-3.5 text-slate-400 group-hover:text-yellow-500 transition mt-0.5 shrink-0 ml-2" />
               </button>
             ))}
           </div>

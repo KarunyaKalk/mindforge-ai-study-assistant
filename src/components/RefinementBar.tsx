@@ -23,10 +23,10 @@ export const RefinementBar: React.FC<RefinementBarProps> = ({ onRefine, isRefini
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-navy-900 text-white rounded-3xl p-5 border border-navy-800 shadow-xl relative overflow-hidden">
-      <div className="flex items-center space-x-2 text-xs font-black text-accent-400 mb-2">
-        <SlidersHorizontal className="w-4 h-4 text-accent-400" />
-        <span>AI Refinement Loop (Modify Active Study Set)</span>
+    <div className="w-full max-w-4xl mx-auto bg-[#0f172a] text-white rounded-2xl p-5 border border-slate-800 shadow-md">
+      <div className="flex items-center space-x-2 text-xs font-mono font-bold text-yellow-400 mb-2">
+        <SlidersHorizontal className="w-3.5 h-3.5 text-yellow-400" />
+        <span>Refinement Engine (Update Active Study Suite)</span>
       </div>
 
       <form onSubmit={handleSubmit} className="flex items-center space-x-2">
@@ -34,39 +34,39 @@ export const RefinementBar: React.FC<RefinementBarProps> = ({ onRefine, isRefini
           type="text"
           value={refinementInput}
           onChange={(e) => setRefinementInput(e.target.value)}
-          placeholder="e.g. 'Add 3 flashcards on memory management', or 'Make quiz harder'..."
+          placeholder="e.g. 'Add 3 flashcards on memory leaks'..."
           disabled={isRefining}
-          className="flex-1 px-4 py-2.5 rounded-xl bg-navy-950 border border-navy-800 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-accent-400"
+          className="flex-1 px-3.5 py-2 rounded-xl bg-[#070b14] border border-slate-800 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-yellow-400"
         />
 
         <button
           type="submit"
           disabled={isRefining || !refinementInput.trim()}
-          className="px-5 py-2.5 bg-accent-400 hover:bg-accent-300 text-navy-950 text-xs font-black rounded-xl transition flex items-center space-x-1.5 border border-accent-300 disabled:opacity-50"
+          className="sde-button-primary"
         >
           {isRefining ? (
             <>
-              <RefreshCw className="w-3.5 h-3.5 animate-spin text-navy-950" />
+              <RefreshCw className="w-3.5 h-3.5 animate-spin text-slate-950" />
               <span>Refining...</span>
             </>
           ) : (
             <>
-              <Sparkles className="w-3.5 h-3.5 text-navy-950" />
-              <span>Apply Refinement</span>
+              <Sparkles className="w-3.5 h-3.5 text-slate-950" />
+              <span>Refine</span>
             </>
           )}
         </button>
       </form>
 
       {/* Preset Refinement Pills */}
-      <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-navy-800 text-[11px]">
-        <span className="text-slate-400 font-medium">Quick refinements:</span>
+      <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-slate-800 text-[11px]">
+        <span className="text-slate-400 font-mono">Quick Refine:</span>
         {SAMPLE_REFINEMENTS.map((text, i) => (
           <button
             key={i}
             onClick={() => onRefine(text)}
             disabled={isRefining}
-            className="px-2.5 py-1 rounded-lg bg-navy-950 hover:bg-navy-800 text-slate-300 border border-navy-800 transition"
+            className="px-2.5 py-1 rounded-lg bg-[#070b14] hover:bg-slate-800 text-slate-300 border border-slate-800 transition"
           >
             + {text}
           </button>
