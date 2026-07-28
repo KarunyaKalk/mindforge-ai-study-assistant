@@ -7,8 +7,11 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
+      },
       colors: {
-        // Deep Navy shades (30% in Light mode, 60% in Dark mode)
         navy: {
           50: '#f0f4f9',
           100: '#e1e8f2',
@@ -20,36 +23,12 @@ export default {
           700: '#234168',
           800: '#1b3252',
           900: '#0f172a',
-          950: '#090d1a',
+          950: '#070b14',
         },
-        // Soft Yellow Pop Accent (10% in both modes)
-        accent: {
-          50: '#fefce8',
-          100: '#fef9c3',
-          200: '#fef08a',
-          300: '#fde047',
-          400: '#facc15',
-          500: '#eab308',
-          600: '#ca8a04',
-          700: '#a16207',
-          800: '#854d0e',
-          900: '#713f12',
-          950: '#422006',
-        },
-      },
-      fontFamily: {
-        sans: ['Inter', 'Outfit', 'sans-serif'],
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'float': 'float 4s ease-in-out infinite',
       },
-      keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-6px)' },
-        }
-      }
     },
   },
   plugins: [],

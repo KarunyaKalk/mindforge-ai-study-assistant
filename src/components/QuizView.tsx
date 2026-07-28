@@ -65,17 +65,17 @@ export const QuizView: React.FC<QuizViewProps> = ({
 
       {/* Final Results Summary Card if Completed */}
       {quizCompleted && results && (
-        <div className="bg-[#0f172a] text-white rounded-2xl p-6 shadow-md border border-yellow-400/40 relative overflow-hidden">
+        <div className="bg-white dark:bg-[#0f172a] text-slate-900 dark:text-white rounded-2xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-800 relative overflow-hidden transition-colors">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex items-center space-x-4">
               <div className="w-14 h-14 rounded-xl bg-yellow-400 text-slate-950 flex items-center justify-center text-2xl font-extrabold border border-yellow-300">
                 <Award className="w-7 h-7 text-slate-950" />
               </div>
               <div>
-                <h4 className="text-xl font-bold tracking-tight text-white">
+                <h4 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
                   Score: {results.scorePercentage}%
                 </h4>
-                <p className="text-xs text-slate-300 mt-0.5">
+                <p className="text-xs text-slate-500 dark:text-slate-300 mt-0.5">
                   {results.correctAnswers} out of {results.totalQuestions} questions correct.
                 </p>
               </div>
