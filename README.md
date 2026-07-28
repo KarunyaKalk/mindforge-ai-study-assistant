@@ -8,40 +8,40 @@
 
 ---
 
-## 🌐 Live Application
-👉 **[https://karunyakalk.github.io/mindforge-ai-study-assistant/](https://karunyakalk.github.io/mindforge-ai-study-assistant/)**
+## Live Application
+ **[https://karunyakalk.github.io/mindforge-ai-study-assistant/](https://karunyakalk.github.io/mindforge-ai-study-assistant/)**
 
 ---
 
-## 🚀 Key Features
+##  Key Features
 
 1. **⚡ Fast LLM Generation with Groq API (Llama 3.3)**:
    - Ultra-fast structured JSON generation using Groq's `llama-3.3-70b-versatile` model.
 
-2. **🎴 Redesigned 500px Flashcard Deck**:
+2. ** Redesigned 500px Flashcard Deck**:
    - **SRS Spaced Repetition Rating**: Rate recall difficulty with Anki-style intervals (**Again** `<1m`, **Hard** `12h`, **Good** `1d`, **Easy** `4d`).
    - **Quick Self-Check Questions**: Interactive multiple-choice check embedded directly on the front of each flashcard to test comprehension before flipping.
    - **Audio TTS & Tools**: Text-to-speech, bookmarking, sharing, category badges, and smooth 3D flip animations.
 
-3. **🎯 Selectable Generation Package Modes**:
+3. ** Selectable Generation Package Modes**:
    - Choose output format before generation: **Full Package (Cards + Quiz)**, **Flashcards Only**, or **Quiz Only**.
 
 4. **📝 Extended Learning Modules**:
    - Segmented tab controls for **Flashcards**, **Assessment Quiz** (with Re-test Wrong Answers mode), **Key Terms Glossary**, **Structured Notes**, **Senior Engineering Interview Prep**, and **Real-World Case Studies**.
 
-5. **📊 Dashboard Metrics & Gamification**:
+5. ** Dashboard Metrics & Gamification**:
    - Track Mastered count, Remaining cards, Review Today, Weekly Streak (🔥 `5d`), XP Counter (⚡ `1,240 XP`), and an SVG **Circular Completion Meter**.
 
-6. **🎨 Hand-Crafted Linear / Vercel Product Design System**:
+6. ** Hand-Crafted Linear / Vercel Product Design System**:
    - 42px hero typography, `#090B11` deep canvas background, `#161B26` cards, 1px subtle borders (`rgba(255,255,255,0.06)`), `#F4C430` golden saffron accents, 1280px max container width, and 8px grid alignment.
    - Default Light Mode on initial load with 1-click Dark Mode toggle.
 
-7. **🛡️ Resilient Failure Handling**:
+7. ** Resilient Failure Handling**:
    - Dropdown tool to simulate malformed JSON, schema mismatches, and 500 server errors on demand.
 
 ---
 
-## 🏗️ Architecture & Technical Stack
+##  Architecture & Technical Stack
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -74,7 +74,7 @@
 
 ---
 
-## 🛠️ Handling Bad AI Output (Core Evaluation Criteria)
+##  Handling Bad AI Output (Core Evaluation Criteria)
 
 | Failure Mode | How MindForge AI Handles It |
 | :--- | :--- |
