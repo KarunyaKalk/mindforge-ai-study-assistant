@@ -314,8 +314,8 @@ export const FlashcardDeck: React.FC<FlashcardDeckProps> = ({
                       onClick={() => setShowQuickCheck(!showQuickCheck)}
                       className="inline-flex items-center space-x-1.5 text-[13px] font-bold text-[#F4C430] bg-[#F4C430]/10 hover:bg-[#F4C430]/20 px-3 py-1 rounded-lg border border-[#F4C430]/30 transition"
                     >
-                      <Zap className="w-4 h-4 fill-[#F4C430]" />
-                      <span>{showQuickCheck ? 'Hide Quick Check' : '⚡ Quick Self-Check'}</span>
+                      <Zap className="w-4 h-4 text-[#F4C430]" />
+                      <span>{showQuickCheck ? 'Hide Quick Check' : 'Quick Self-Check'}</span>
                     </button>
                   )}
                 </div>
