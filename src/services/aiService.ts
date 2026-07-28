@@ -82,6 +82,19 @@ export async function generateStudySet(
     }
 
     if (!response.ok) {
+      // If deployed on static hosting like GitHub Pages where /api/generate returns 404, fallback to client mock generator
+      if (response.status === 404 && !options?.simulateFailure) {
+        console.warn('Backend API proxy returned 404 (Static hosting detected). Activating client-side fallback.');
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        if (currentRequestId !== activeRequestId) {
+          const error = new Error('Stale request cancelled.') as any;
+          error.isStale = true;
+          throw error;
+        }
+        const mockSet = generateMockStudySet(prompt);
+        return { studySet: mockSet, isMock: true };
+      }
+
       const errJson = await response.json().catch(() => ({}));
       const failure: FailureDetail = {
         type: response.status >= 500 ? 'SERVER_ERROR' : 'NETWORK_ERROR',
