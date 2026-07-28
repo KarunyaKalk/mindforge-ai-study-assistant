@@ -18,11 +18,7 @@ import { ActiveTabType, GenerationMode } from './types/study';
 import { Layers, HelpCircle, BookOpen, FileText, Award, Building2, Keyboard } from 'lucide-react';
 
 export default function App() {
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
-    return (
-      window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-    );
-  });
+  const [darkMode, setDarkMode] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<ActiveTabType>('flashcards');
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
   const [showInputSection, setShowInputSection] = useState<boolean>(false);
