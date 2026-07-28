@@ -1,6 +1,6 @@
 import React from 'react';
 import { QuizQuestion, QuizResult } from '../types/study';
-import { CheckCircle, XCircle, RotateCcw, Award, ArrowRight, AlertCircle, HelpCircle } from 'lucide-react';
+import { CheckCircle, XCircle, RotateCcw, Award, ArrowRight, HelpCircle } from 'lucide-react';
 
 interface QuizViewProps {
   questions: QuizQuestion[];
@@ -31,14 +31,14 @@ export const QuizView: React.FC<QuizViewProps> = ({
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
       {/* Banner / Header */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-navy-900 rounded-3xl p-6 border border-slate-200 dark:border-navy-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2">
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+            <h3 className="text-xl font-black text-navy-950 dark:text-white">
               {isReTestingWrong ? 'Re-Testing Wrong Answers' : 'Interactive Assessment Quiz'}
             </h3>
             {isReTestingWrong && (
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300">
                 Focus Mode
               </span>
             )}
@@ -49,13 +49,13 @@ export const QuizView: React.FC<QuizViewProps> = ({
         </div>
 
         <div className="flex items-center space-x-3">
-          <div className="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-xl">
+          <div className="text-xs font-mono font-bold text-navy-900 dark:text-slate-200 bg-slate-100 dark:bg-navy-950 px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-navy-800">
             Answered: {answeredCount} / {questions.length}
           </div>
           {isReTestingWrong && (
             <button
               onClick={onResetFullQuiz}
-              className="text-xs font-semibold text-brand-600 hover:text-brand-500 underline"
+              className="text-xs font-extrabold text-accent-600 dark:text-accent-400 hover:underline"
             >
               Reset Full Quiz
             </button>
@@ -65,14 +65,14 @@ export const QuizView: React.FC<QuizViewProps> = ({
 
       {/* Final Results Summary Card if Completed */}
       {quizCompleted && results && (
-        <div className="bg-gradient-to-br from-brand-900 via-slate-900 to-indigo-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-brand-500/30">
+        <div className="bg-navy-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-accent-400/40 relative overflow-hidden">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-3xl font-extrabold text-amber-400 border border-white/20">
-                <Award className="w-8 h-8" />
+              <div className="w-16 h-16 rounded-2xl bg-accent-400 text-navy-950 flex items-center justify-center text-3xl font-black border border-accent-300 shadow-lg shadow-accent-400/20">
+                <Award className="w-8 h-8 text-navy-950" />
               </div>
               <div>
-                <h4 className="text-2xl font-black tracking-tight">
+                <h4 className="text-2xl font-black tracking-tight text-white">
                   Quiz Score: {results.scorePercentage}%
                 </h4>
                 <p className="text-sm text-slate-300 mt-0.5">
@@ -86,16 +86,16 @@ export const QuizView: React.FC<QuizViewProps> = ({
               {results.wrongQuestionIds.length > 0 && (
                 <button
                   onClick={() => onRetestWrongAnswers(results.wrongQuestionIds)}
-                  className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 px-5 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-lg transition"
+                  className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 px-5 py-3 rounded-2xl bg-amber-400 hover:bg-amber-300 text-navy-950 font-black text-xs shadow-lg transition"
                 >
-                  <RotateCcw className="w-4 h-4" />
+                  <RotateCcw className="w-4 h-4 text-navy-950" />
                   <span>Re-test Wrong Answers ({results.wrongQuestionIds.length})</span>
                 </button>
               )}
 
               <button
                 onClick={onResetFullQuiz}
-                className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs border border-white/20 transition"
+                className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition"
               >
                 <RotateCcw className="w-4 h-4" />
                 <span>Retake Entire Quiz</span>
@@ -115,28 +115,28 @@ export const QuizView: React.FC<QuizViewProps> = ({
           return (
             <div
               key={q.id}
-              className={`bg-white dark:bg-slate-900 rounded-3xl p-6 border transition shadow-sm ${
+              className={`bg-white dark:bg-navy-900 rounded-3xl p-6 border transition shadow-sm ${
                 hasAnswered
                   ? isCorrect
-                    ? 'border-emerald-500/50 bg-emerald-50/10 dark:bg-emerald-950/10'
-                    : 'border-red-500/50 bg-red-50/10 dark:bg-red-950/10'
-                  : 'border-slate-200 dark:border-slate-800'
+                    ? 'border-emerald-500/50 bg-emerald-50/20 dark:bg-emerald-950/20'
+                    : 'border-red-500/50 bg-red-50/20 dark:bg-red-950/20'
+                  : 'border-slate-200 dark:border-navy-800'
               }`}
             >
               <div className="flex items-start justify-between gap-3 mb-4">
-                <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-start space-x-2">
-                  <span className="text-brand-600 dark:text-brand-400 font-mono">Q{qIndex + 1}.</span>
+                <h4 className="text-base sm:text-lg font-black text-navy-950 dark:text-white flex items-start space-x-2">
+                  <span className="text-accent-600 dark:text-accent-400 font-mono">Q{qIndex + 1}.</span>
                   <span>{q.question}</span>
                 </h4>
                 {hasAnswered && (
                   <div className="shrink-0">
                     {isCorrect ? (
-                      <span className="flex items-center space-x-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800">
+                      <span className="flex items-center space-x-1 text-xs font-bold text-emerald-700 dark:text-emerald-300 px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800">
                         <CheckCircle className="w-3.5 h-3.5" />
                         <span>Correct</span>
                       </span>
                     ) : (
-                      <span className="flex items-center space-x-1 text-xs font-bold text-red-600 dark:text-red-400 px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-950 border border-red-300 dark:border-red-800">
+                      <span className="flex items-center space-x-1 text-xs font-bold text-red-700 dark:text-red-300 px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-950 border border-red-300 dark:border-red-800">
                         <XCircle className="w-3.5 h-3.5" />
                         <span>Incorrect</span>
                       </span>
@@ -152,15 +152,15 @@ export const QuizView: React.FC<QuizViewProps> = ({
                   const isRightAnswer = optIdx === q.correctOptionIndex;
 
                   let optionStyle =
-                    'bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:border-brand-500';
+                    'bg-slate-50 dark:bg-navy-950 border-slate-200 dark:border-navy-800 text-navy-900 dark:text-slate-200 hover:border-accent-400';
 
                   if (hasAnswered) {
                     if (isRightAnswer) {
                       optionStyle =
-                        'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-500 text-emerald-900 dark:text-emerald-200 font-semibold';
+                        'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-500 text-emerald-950 dark:text-emerald-200 font-bold';
                     } else if (isSelected && !isRightAnswer) {
                       optionStyle =
-                        'bg-red-50 dark:bg-red-950/60 border-red-500 text-red-900 dark:text-red-200 line-through';
+                        'bg-red-50 dark:bg-red-950/60 border-red-500 text-red-950 dark:text-red-200 line-through';
                     }
                   }
 
@@ -171,7 +171,7 @@ export const QuizView: React.FC<QuizViewProps> = ({
                       className={`text-left p-3.5 rounded-2xl border text-xs transition flex items-center justify-between ${optionStyle}`}
                     >
                       <div className="flex items-center space-x-2.5">
-                        <span className="w-6 h-6 rounded-lg bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-mono font-bold text-[11px] shrink-0">
+                        <span className="w-6 h-6 rounded-lg bg-slate-200 dark:bg-navy-800 flex items-center justify-center font-mono font-bold text-[11px] shrink-0">
                           {String.fromCharCode(65 + optIdx)}
                         </span>
                         <span>{option}</span>
@@ -187,10 +187,10 @@ export const QuizView: React.FC<QuizViewProps> = ({
 
               {/* Explanation Box */}
               {hasAnswered && (
-                <div className="p-3.5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 flex items-start space-x-2">
-                  <HelpCircle className="w-4 h-4 text-brand-500 shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-2xl bg-slate-100 dark:bg-navy-950 text-xs text-navy-900 dark:text-slate-300 border border-slate-200 dark:border-navy-800 flex items-start space-x-2">
+                  <HelpCircle className="w-4 h-4 text-accent-500 shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-bold text-slate-900 dark:text-white">Explanation: </span>
+                    <span className="font-bold text-navy-950 dark:text-white">Explanation: </span>
                     {q.explanation}
                   </div>
                 </div>
@@ -200,16 +200,16 @@ export const QuizView: React.FC<QuizViewProps> = ({
         })}
       </div>
 
-      {/* Submit Button */}
+      {/* Submit Button (Soft Yellow CTA) */}
       {!quizCompleted && (
         <div className="flex justify-end pt-2">
           <button
             onClick={onSubmitQuiz}
             disabled={!isAllAnswered}
-            className="flex items-center space-x-2 px-6 py-3 bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm rounded-2xl shadow-lg shadow-brand-500/25 disabled:opacity-50 disabled:cursor-not-allowed transition"
+            className="flex items-center space-x-2 px-6 py-3 bg-accent-400 hover:bg-accent-300 text-navy-950 font-black text-sm rounded-2xl shadow-lg shadow-accent-400/20 border border-accent-300 disabled:opacity-50 disabled:cursor-not-allowed transition"
           >
             <span>Complete Quiz & View Analysis</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 text-navy-950" />
           </button>
         </div>
       )}

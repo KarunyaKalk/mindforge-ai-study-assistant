@@ -4,7 +4,8 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased min-h-screen selection:bg-brand-500 selection:text-white transition-colors duration-200;
+    /* Light mode: 60% Slate Grey background, 30% Deep Navy text/structure, 10% Soft Yellow accent */
+    @apply bg-slate-100 text-navy-900 dark:bg-navy-950 dark:text-slate-100 font-sans antialiased min-h-screen selection:bg-accent-400 selection:text-navy-950 transition-colors duration-200;
   }
 }
 
@@ -21,7 +22,7 @@
   backface-visibility: hidden;
 }
 
-/* Custom Scrollbars */
+/* Professional Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -32,9 +33,9 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 dark:bg-slate-700 rounded-full;
+  @apply bg-slate-300 dark:bg-slate-800 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400 dark:bg-slate-600;
+  @apply bg-slate-400 dark:bg-slate-700;
 }

@@ -9,7 +9,7 @@ import { SessionHistory } from './components/SessionHistory';
 import { ErrorAlert } from './components/ErrorAlert';
 import { LoadingSkeleton } from './components/LoadingSkeleton';
 import { useStudySession } from './hooks/useStudySession';
-import { Layers, HelpCircle, BookOpen, Clock, Sparkles, PlusCircle } from 'lucide-react';
+import { Layers, HelpCircle, BookOpen, Clock, PlusCircle } from 'lucide-react';
 
 export default function App() {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
@@ -67,7 +67,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200">
+    <div className="min-h-screen bg-slate-100 dark:bg-navy-950 text-navy-950 dark:text-slate-100 flex flex-col transition-colors duration-200">
       {/* Header */}
       <Header
         darkMode={darkMode}
@@ -97,22 +97,22 @@ export default function App() {
         {activeStudySet && !isLoading && (
           <div className="space-y-8 animate-fade-in">
             {/* Top Bar for Topic Summary & New Topic Trigger */}
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="bg-white dark:bg-navy-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-navy-800 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div>
                 <div className="flex flex-wrap items-center gap-2 mb-2">
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300 border border-brand-200 dark:border-brand-800">
+                  <span className="px-3 py-1 rounded-full text-xs font-black bg-accent-100 text-accent-900 dark:bg-accent-950/80 dark:text-accent-300 border border-accent-300 dark:border-accent-800">
                     {activeStudySet.category}
                   </span>
-                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-800 dark:bg-navy-950 dark:text-slate-200 border border-slate-200 dark:border-navy-800">
                     {activeStudySet.difficulty} Level
                   </span>
                   <span className="text-xs text-slate-400 flex items-center space-x-1 font-mono">
-                    <Clock className="w-3.5 h-3.5" />
+                    <Clock className="w-3.5 h-3.5 text-accent-500" />
                     <span>~{activeStudySet.estimatedTimeMinutes} min study</span>
                   </span>
                 </div>
 
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                <h2 className="text-2xl sm:text-3xl font-black text-navy-950 dark:text-white tracking-tight">
                   {activeStudySet.title}
                 </h2>
                 <p className="text-sm text-slate-600 dark:text-slate-300 mt-2 max-w-3xl leading-relaxed">
@@ -125,22 +125,22 @@ export default function App() {
                   setShowInputSection((prev) => !prev);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="shrink-0 flex items-center space-x-2 px-4 py-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs transition"
+                className="shrink-0 flex items-center space-x-2 px-4.5 py-2.5 rounded-2xl bg-accent-400 hover:bg-accent-300 text-navy-950 font-black text-xs transition shadow-md border border-accent-300"
               >
-                <PlusCircle className="w-4 h-4 text-brand-500" />
+                <PlusCircle className="w-4 h-4 text-navy-950" />
                 <span>{showInputSection ? 'Close Input' : 'New Topic'}</span>
               </button>
             </div>
 
-            {/* Navigation Tabs */}
+            {/* Navigation Tabs (Soft Yellow active tab) */}
             <div className="flex items-center justify-center">
-              <div className="inline-flex p-1.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+              <div className="inline-flex p-1.5 rounded-2xl bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-800 shadow-sm">
                 <button
                   onClick={() => setActiveTab('flashcards')}
-                  className={`flex items-center space-x-2 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition ${
+                  className={`flex items-center space-x-2 px-5 py-2.5 rounded-xl font-black text-xs sm:text-sm transition ${
                     activeTab === 'flashcards'
-                      ? 'bg-brand-600 text-white shadow-md'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      ? 'bg-accent-400 text-navy-950 shadow-md border border-accent-300'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-navy-950 dark:hover:text-white'
                   }`}
                 >
                   <Layers className="w-4 h-4" />
@@ -149,10 +149,10 @@ export default function App() {
 
                 <button
                   onClick={() => setActiveTab('quiz')}
-                  className={`flex items-center space-x-2 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition ${
+                  className={`flex items-center space-x-2 px-5 py-2.5 rounded-xl font-black text-xs sm:text-sm transition ${
                     activeTab === 'quiz'
-                      ? 'bg-brand-600 text-white shadow-md'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      ? 'bg-accent-400 text-navy-950 shadow-md border border-accent-300'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-navy-950 dark:hover:text-white'
                   }`}
                 >
                   <HelpCircle className="w-4 h-4" />
@@ -161,10 +161,10 @@ export default function App() {
 
                 <button
                   onClick={() => setActiveTab('glossary')}
-                  className={`flex items-center space-x-2 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition ${
+                  className={`flex items-center space-x-2 px-5 py-2.5 rounded-xl font-black text-xs sm:text-sm transition ${
                     activeTab === 'glossary'
-                      ? 'bg-brand-600 text-white shadow-md'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      ? 'bg-accent-400 text-navy-950 shadow-md border border-accent-300'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-navy-950 dark:hover:text-white'
                   }`}
                 >
                   <BookOpen className="w-4 h-4" />
@@ -216,7 +216,7 @@ export default function App() {
       />
 
       {/* Footer */}
-      <footer className="py-6 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400">
+      <footer className="py-6 border-t border-slate-200 dark:border-navy-800 text-center text-xs text-slate-500 dark:text-slate-400">
         <p>
           Built for Senior SDE Internship Reference • Powered by React 18, TypeScript, Zod & Gemini AI
         </p>
