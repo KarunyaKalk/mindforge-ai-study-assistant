@@ -1,30 +1,54 @@
-# MindForge AI - AI Study Assistant (SDE Internship Reference Project)
+# MindForge AI — AI Study Assistant & Knowledge Studio
 
-> **Inspirational Reference Solution** built for the **Frontend Internship Assignment**. Demonstrates how to turn unpredictable AI model output into a reliable, stateful, and interactive user interface without relying on generic chat UI.
+[![Live Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-yellow?style=for-the-badge&logo=github)](https://karunyakalk.github.io/mindforge-ai-study-assistant/)
+[![Stack](https://img.shields.io/badge/Stack-React_18_|_TypeScript_|_Zod_|_Groq_Llama_3.3-blue?style=for-the-badge)](https://github.com/KarunyaKalk/mindforge-ai-study-assistant)
+[![Design](https://img.shields.io/badge/Design-Linear_|_Vercel_SaaS_Style-black?style=for-the-badge)](https://karunyakalk.github.io/mindforge-ai-study-assistant/)
 
----
-
-##  Overview & Features
-
-**MindForge AI** takes free-form text input (lecture notes, raw articles, code snippets, or study topics), routes it through a secure backend proxy to an LLM, and transforms the response into a structured learning suite:
-
-1. **3D Flip Flashcard Deck**: Interactive flashcards with 3D card flips, Mastered/Needs Review tracking, audio text-to-speech, shuffle, and full keyboard navigation (Space to flip, Arrow keys to navigate & mark).
-2. **Interactive Assessment Quiz**: Multiple-choice assessment with instant explanations, score analysis, and a **"Re-test Wrong Answers"** focus mode.
-3. **Key Terms & Glossary**: Searchable technical concepts with importance tags and one-click copying.
-4. **AI Refinement Loop**: Follow-up prompt bar that updates existing study sets dynamically (e.g. *"Add 3 harder flashcards on caching strategies"*).
-5. **Session History**: Save & restore past study sessions from `localStorage`.
-6. **Failure Resilience Testing Suite**: Dropdown menu allowing reviewers and interns to simulate malformed JSON, schema mismatches, and 500 server errors on demand.
+> **Production-Ready Senior SDE Reference Project** built for the **Frontend Internship Assignment**. Demonstrates how to turn non-deterministic LLM output into a reliable, stateful, and production-grade SaaS product without generic chat interfaces.
 
 ---
 
-##  Architecture & Design Decisions
+## 🌐 Live Application
+👉 **[https://karunyakalk.github.io/mindforge-ai-study-assistant/](https://karunyakalk.github.io/mindforge-ai-study-assistant/)**
+
+---
+
+## 🚀 Key Features
+
+1. **⚡ Fast LLM Generation with Groq API (Llama 3.3)**:
+   - Ultra-fast structured JSON generation using Groq's `llama-3.3-70b-versatile` model.
+
+2. **🎴 Redesigned 500px Flashcard Deck**:
+   - **SRS Spaced Repetition Rating**: Rate recall difficulty with Anki-style intervals (**Again** `<1m`, **Hard** `12h`, **Good** `1d`, **Easy** `4d`).
+   - **Quick Self-Check Questions**: Interactive multiple-choice check embedded directly on the front of each flashcard to test comprehension before flipping.
+   - **Audio TTS & Tools**: Text-to-speech, bookmarking, sharing, category badges, and smooth 3D flip animations.
+
+3. **🎯 Selectable Generation Package Modes**:
+   - Choose output format before generation: **Full Package (Cards + Quiz)**, **Flashcards Only**, or **Quiz Only**.
+
+4. **📝 Extended Learning Modules**:
+   - Segmented tab controls for **Flashcards**, **Assessment Quiz** (with Re-test Wrong Answers mode), **Key Terms Glossary**, **Structured Notes**, **Senior Engineering Interview Prep**, and **Real-World Case Studies**.
+
+5. **📊 Dashboard Metrics & Gamification**:
+   - Track Mastered count, Remaining cards, Review Today, Weekly Streak (🔥 `5d`), XP Counter (⚡ `1,240 XP`), and an SVG **Circular Completion Meter**.
+
+6. **🎨 Hand-Crafted Linear / Vercel Product Design System**:
+   - 42px hero typography, `#090B11` deep canvas background, `#161B26` cards, 1px subtle borders (`rgba(255,255,255,0.06)`), `#F4C430` golden saffron accents, 1280px max container width, and 8px grid alignment.
+   - Default Light Mode on initial load with 1-click Dark Mode toggle.
+
+7. **🛡️ Resilient Failure Handling**:
+   - Dropdown tool to simulate malformed JSON, schema mismatches, and 500 server errors on demand.
+
+---
+
+## 🏗️ Architecture & Technical Stack
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                      React 18 + Vite                        │
+│                 React 18 + TypeScript + Vite                │
+│   - Handcrafted Linear/Vercel SaaS Design System             │
 │   - Custom Hooks (useStudySession, useLocalStorage)         │
-│   - Stateful UI Components (Flashcards, Quiz, Glossary)     │
-│   - Stale Guard (AbortController + sequence counter)        │
+│   - Stale Guard (AbortController + Sequence Counter)        │
 └──────────────────────────────┬──────────────────────────────┘
                                │
                                ▼
@@ -38,85 +62,63 @@
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
 │               Express Server Proxy (server.js)              │
-│   - Secures GEMINI_API_KEY (never exposed to browser)      │
+│   - Secures GROQ_API_KEY (never exposed to client browser)   │
 │   - Automatic Mock Fallback if no API key is provided       │
 └──────────────────────────────┬──────────────────────────────┘
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                 Groq API (Llama 3.3 Versatile)               │
+│          Groq API (Llama 3.3 Versatile JSON Engine)          │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Key Technical Highlights
-
-1. **Backend Key Security**: The `GEMINI_API_KEY` is kept exclusively on the Node/Express backend (`server.js`). The frontend calls `/api/generate` and `/api/refine`.
-2. **Zero-Setup Out-of-the-Box Fallback**: If no `GEMINI_API_KEY` is provided in `.env`, the system automatically switches to a high-quality mock generator so anyone can run `npm install && npm start` without hitting key errors.
-3. **Preventing Race Conditions & Stale Overwrites**: Rapid consecutive inputs create new `AbortController` signals and increment a sequence ID counter. If a delayed response arrives after a newer query was fired, it is automatically discarded.
-
 ---
 
-##  Handling Bad AI Output (Core Requirement)
-
-Handling non-deterministic LLM output is the core evaluation criteria of this assignment:
+## 🛠️ Handling Bad AI Output (Core Evaluation Criteria)
 
 | Failure Mode | How MindForge AI Handles It |
 | :--- | :--- |
-| **Markdown Fences & Commentary** | The `extractAndParseJSON` helper strips markdown blocks (` ```json `), extracts clean JSON bounds, and repairs trailing commas. |
+| **Markdown Fences & Commentary** | `extractAndParseJSON` strips codeblocks (` ```json `), extracts raw JSON bounds, and repairs unescaped characters. |
 | **Malformed Syntax** | Trapped by try/catch in `aiService.ts`, displaying a user-friendly `ErrorAlert` banner with diagnostic raw output inspector and single-click Retry. |
-| **Wrong Schema / Missing Keys** | Validated with **Zod Schema** (`RawStudySetSchema`). Optional fields fall back to sensible defaults (e.g. default hints or category names). |
+| **Wrong Schema / Missing Keys** | Validated with **Zod Schema** (`RawStudySetSchema`). Optional fields fall back to sensible defaults. |
 | **Out-of-Order Stale Responses** | Guarded by `AbortController` cancellation and sequence tracking (`currentRequestId !== activeRequestId`). |
 | **Server 500 / Network Down** | Returns explicit `FailureDetail` with HTTP error codes, guidance, and non-crashing UI boundaries. |
 
 ---
 
-##  Quick Start & Installation
+## ⌨️ Keyboard Shortcuts
 
-### Prerequisites
-- **Node.js**: v18.0.0 or higher
-- **npm**: v9.0.0 or higher
-
-### Steps
-
-1. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
-
-2. **Configure Environment Variables (Optional)**:
-   ```bash
-   cp .env.example .env
-   ```
-   *Edit `.env` to set `GEMINI_API_KEY=your_key_here` if you wish to test live LLM calls. If left empty, Mock Mode activates automatically.*
-
-3. **Start Project**:
-   ```bash
-   npm start
-   ```
-   *This starts the Express server proxy and Vite frontend on `http://localhost:3000`.*
+| Key | Action |
+| :--- | :--- |
+| <kbd>Space</kbd> | Flip 3D Flashcard |
+| <kbd>←</kbd> <kbd>→</kbd> | Navigate Previous / Next Card |
+| <kbd>1</kbd> | Grade SRS: **Again** (< 1 min) |
+| <kbd>2</kbd> | Grade SRS: **Hard** (12 hours) |
+| <kbd>3</kbd> | Grade SRS: **Good** (1 day) |
+| <kbd>4</kbd> | Grade SRS: **Easy** (4 days) |
 
 ---
 
-##  AI Usage Note (Transparency Statement)
+## 💻 Quick Start & Installation
 
-Per the assignment instructions:
-- **AI Assistants Used**: Antigravity AI coding assistant and Claude 3.5 Sonnet for scaffolding component boilerplate, drafting Zod schemas, and writing initial CSS utility classes.
-- **Human Guidance & Review**: Architectural decisions (AbortController stale guards, Express proxy separation, Zod schema validation, 3D flip card keyboard handling, and error diagnostic views) were designed and reviewed by a Senior SDE to model best practices for interns.
+```bash
+# 1. Clone repository
+git clone https://github.com/KarunyaKalk/mindforge-ai-study-assistant.git
+cd mindforge-ai-study-assistant
+
+# 2. Install dependencies
+npm install
+
+# 3. Configure Environment (Optional for live AI calls)
+cp .env.example .env
+# Set GROQ_API_KEY=your_groq_key in .env (Get free key at https://console.groq.com/)
+
+# 4. Start local development server
+npm start
+```
+*Navigates automatically to `http://localhost:3000` with hot-reload enabled.*
 
 ---
 
-##  Time Spent Breakdown (~8 Hours Total Target)
-
-- **Planning & Architecture Design**: 1.5 hours
-- **Backend Express Proxy & API Key Security**: 1 hour
-- **Zod Schema Validation & Fuzzy JSON Repair**: 1.5 hours
-- **React Components & Interactive State (Cards/Quiz/Glossary)**: 2.5 hours
-- **Refinement Loop & History Persistence**: 1 hour
-- **Documentation & Verification**: 0.5 hours
-
----
-
-##  Future Scope & Improvements
-- WebSockets for true real-time token streaming.
-- Export deck to Anki (`.apkg`) format or PDF study guide.
-- User authentication and multi-device Sync.
+## 📄 License
+Built for Senior SDE Internship Reference & Open Educational Use.
