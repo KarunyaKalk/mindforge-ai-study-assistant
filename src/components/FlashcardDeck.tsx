@@ -10,6 +10,7 @@ import {
   ChevronRight,
   HelpCircle,
   BookmarkCheck,
+  Zap,
 } from 'lucide-react';
 
 interface FlashcardDeckProps {
@@ -21,6 +22,8 @@ export const FlashcardDeck: React.FC<FlashcardDeckProps> = ({ cards, onToggleSta
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
   const [showHint, setShowHint] = useState<boolean>(false);
+  const [showQuickCheck, setShowQuickCheck] = useState<boolean>(false);
+  const [selectedQuickCheckOpt, setSelectedQuickCheckOpt] = useState<number | null>(null);
   const [activeFilter, setActiveFilter] = useState<'all' | 'review' | 'mastered'>('all');
   const [deck, setDeck] = useState<Flashcard[]>(cards);
 
@@ -39,12 +42,16 @@ export const FlashcardDeck: React.FC<FlashcardDeckProps> = ({ cards, onToggleSta
   const handleNext = useCallback(() => {
     setIsFlipped(false);
     setShowHint(false);
+    setShowQuickCheck(false);
+    setSelectedQuickCheckOpt(null);
     setCurrentIndex((prev) => (prev + 1) % (filteredDeck.length || 1));
   }, [filteredDeck.length]);
 
   const handlePrev = useCallback(() => {
     setIsFlipped(false);
     setShowHint(false);
+    setShowQuickCheck(false);
+    setSelectedQuickCheckOpt(null);
     setCurrentIndex((prev) => (prev - 1 + filteredDeck.length) % (filteredDeck.length || 1));
   }, [filteredDeck.length]);
 
@@ -54,6 +61,8 @@ export const FlashcardDeck: React.FC<FlashcardDeckProps> = ({ cards, onToggleSta
     setCurrentIndex(0);
     setIsFlipped(false);
     setShowHint(false);
+    setShowQuickCheck(false);
+    setSelectedQuickCheckOpt(null);
   };
 
   const handleSpeak = (text: string) => {
@@ -241,22 +250,74 @@ export const FlashcardDeck: React.FC<FlashcardDeckProps> = ({ cards, onToggleSta
               {isFlipped ? activeCard.answer : activeCard.question}
             </h3>
 
-            {/* Hint */}
-            {!isFlipped && activeCard.hint && (
-              <div className="mt-3" onClick={(e) => e.stopPropagation()}>
-                {showHint ? (
+            {/* Hint & Quick Check Question */}
+            {!isFlipped && (
+              <div className="mt-3 space-y-2" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center justify-center space-x-3">
+                  {activeCard.hint && (
+                    <button
+                      onClick={() => setShowHint(!showHint)}
+                      className="inline-flex items-center space-x-1 text-xs text-slate-500 hover:text-yellow-600 dark:hover:text-yellow-400 font-medium transition"
+                    >
+                      <HelpCircle className="w-3.5 h-3.5" />
+                      <span>{showHint ? 'Hide Hint' : 'Show Hint'}</span>
+                    </button>
+                  )}
+
+                  {activeCard.quickCheck && (
+                    <button
+                      onClick={() => setShowQuickCheck(!showQuickCheck)}
+                      className="inline-flex items-center space-x-1 text-xs font-bold text-yellow-600 dark:text-yellow-400 bg-yellow-400/10 hover:bg-yellow-400/20 px-2.5 py-1 rounded-lg border border-yellow-400/30 transition"
+                    >
+                      <Zap className="w-3.5 h-3.5 fill-yellow-400" />
+                      <span>{showQuickCheck ? 'Hide Quick Check' : '⚡ Quick Self-Check'}</span>
+                    </button>
+                  )}
+                </div>
+
+                {showHint && activeCard.hint && (
                   <div className="inline-block px-3 py-1.5 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-300 text-xs rounded-xl border border-amber-200 dark:border-amber-800 max-w-md">
                     <span className="font-bold">Hint: </span>
                     {activeCard.hint}
                   </div>
-                ) : (
-                  <button
-                    onClick={() => setShowHint(true)}
-                    className="inline-flex items-center space-x-1 text-xs text-slate-400 hover:text-yellow-500 transition"
-                  >
-                    <HelpCircle className="w-3.5 h-3.5" />
-                    <span>Show Hint</span>
-                  </button>
+                )}
+
+                {/* Quick Check Multiple Choice Box */}
+                {showQuickCheck && activeCard.quickCheck && (
+                  <div className="mt-3 p-3.5 bg-slate-50 dark:bg-[#070b14] rounded-xl border border-slate-200 dark:border-slate-800 text-left max-w-lg mx-auto">
+                    <div className="text-[11px] font-mono font-bold text-yellow-600 dark:text-yellow-400 mb-1.5 flex items-center space-x-1">
+                      <Zap className="w-3 h-3" />
+                      <span>Flashcard Quick Check Question:</span>
+                    </div>
+                    <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 mb-2">
+                      {activeCard.quickCheck.question}
+                    </p>
+                    <div className="space-y-1.5">
+                      {activeCard.quickCheck.options.map((opt, oIdx) => {
+                        const isSelected = selectedQuickCheckOpt === oIdx;
+                        const isRight = oIdx === activeCard.quickCheck!.correctIndex;
+
+                        let optClass = "bg-white dark:bg-[#0f172a] border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 hover:border-yellow-400";
+                        if (isSelected) {
+                          optClass = isRight 
+                            ? "bg-emerald-50 dark:bg-emerald-950 border-emerald-500 text-emerald-900 dark:text-emerald-200 font-bold"
+                            : "bg-red-50 dark:bg-red-950 border-red-500 text-red-900 dark:text-red-200 font-bold";
+                        }
+
+                        return (
+                          <button
+                            key={oIdx}
+                            onClick={() => setSelectedQuickCheckOpt(oIdx)}
+                            className={`w-full text-left p-2 rounded-lg border text-xs transition flex items-center justify-between ${optClass}`}
+                          >
+                            <span>{opt}</span>
+                            {isSelected && isRight && <span className="text-emerald-600 font-bold">✓ Correct!</span>}
+                            {isSelected && !isRight && <span className="text-red-600 font-bold">✗ Try Again</span>}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 )}
               </div>
             )}

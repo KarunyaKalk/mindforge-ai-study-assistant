@@ -8,6 +8,18 @@ const normalizeDifficulty = (val: unknown, allowed: string[], fallback: string) 
   return fallback;
 };
 
+export const QuickCheckSchema = z.object({
+  question: z.string().min(1, "Question cannot be empty"),
+  options: z.array(z.string()).min(2, "Must have at least 2 options"),
+  correctIndex: z.preprocess((val) => {
+    if (typeof val === 'string') {
+      const parsed = parseInt(val, 10);
+      return isNaN(parsed) ? 0 : parsed;
+    }
+    return typeof val === 'number' ? val : 0;
+  }, z.number().int().min(0)),
+});
+
 export const FlashcardSchema = z.object({
   id: z.string().optional().default(() => `card_${Math.random().toString(36).substring(2, 9)}`),
   question: z.string().min(1, "Question cannot be empty"),
@@ -20,6 +32,7 @@ export const FlashcardSchema = z.object({
   ),
   isMastered: z.boolean().optional().default(false),
   needsReview: z.boolean().optional().default(false),
+  quickCheck: QuickCheckSchema.optional(),
 });
 
 export const QuizQuestionSchema = z.object({
@@ -68,8 +81,8 @@ export const RawStudySetSchema = z.object({
     }
     return typeof val === 'number' ? val : 15;
   }, z.number().optional().default(15)),
-  flashcards: z.array(FlashcardSchema).min(1, "At least 1 flashcard required"),
-  quiz: z.array(QuizQuestionSchema).min(1, "At least 1 quiz question required"),
+  flashcards: z.array(FlashcardSchema).optional().default([]),
+  quiz: z.array(QuizQuestionSchema).optional().default([]),
   keyConcepts: z.array(KeyConceptSchema).optional().default([]),
 });
 

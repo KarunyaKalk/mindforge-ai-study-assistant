@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { BookOpen, AlertTriangle, Play, RefreshCw, Zap } from 'lucide-react';
+import { GenerationMode } from '../types/study';
+import { BookOpen, AlertTriangle, Play, RefreshCw, Zap, Layers, HelpCircle, Sparkles } from 'lucide-react';
 
 interface InputSectionProps {
-  onSubmit: (prompt: string, options?: { simulateFailure?: boolean; forcedErrorType?: string }) => void;
+  onSubmit: (prompt: string, options?: { generationMode?: GenerationMode; simulateFailure?: boolean; forcedErrorType?: string }) => void;
   isLoading: boolean;
 }
 
@@ -27,21 +28,23 @@ const PRESET_TOPICS = [
 
 export const InputSection: React.FC<InputSectionProps> = ({ onSubmit, isLoading }) => {
   const [inputPrompt, setInputPrompt] = useState<string>('');
+  const [selectedMode, setSelectedMode] = useState<GenerationMode>('all');
   const [showFailureDemoMenu, setShowFailureDemoMenu] = useState<boolean>(false);
 
   const handleSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!inputPrompt.trim() || isLoading) return;
-    onSubmit(inputPrompt.trim());
+    onSubmit(inputPrompt.trim(), { generationMode: selectedMode });
   };
 
   const handleSelectPreset = (presetText: string) => {
     setInputPrompt(presetText);
-    onSubmit(presetText);
+    onSubmit(presetText, { generationMode: selectedMode });
   };
 
   const handleSimulateFailure = (errorType: string) => {
     onSubmit(inputPrompt || 'Simulated Test Prompt', {
+      generationMode: selectedMode,
       simulateFailure: true,
       forcedErrorType: errorType,
     });
@@ -52,15 +55,62 @@ export const InputSection: React.FC<InputSectionProps> = ({ onSubmit, isLoading 
       <div className="bg-white dark:bg-[#0f172a] rounded-2xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-sm transition">
         <div className="flex items-center space-x-2 text-slate-500 dark:text-slate-400 font-mono text-[11px] uppercase tracking-wider mb-2">
           <BookOpen className="w-3.5 h-3.5" />
-          <span>Source Input & Context</span>
+          <span>Source Input & Generation Mode</span>
         </div>
 
         <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight mb-2">
           Enter lecture notes, code, or study topic
         </h2>
         <p className="text-slate-600 dark:text-slate-400 text-xs mb-5">
-          MindForge parses your prompt into schema-validated 3D flashcards, interactive quizzes, and key terms.
+          Select what output components you want generated from your input topic.
         </p>
+
+        {/* Generation Mode Option Selector */}
+        <div className="mb-4">
+          <div className="text-[11px] font-mono text-slate-400 mb-2">
+            Select Output Package Mode:
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <button
+              type="button"
+              onClick={() => setSelectedMode('all')}
+              className={`p-3 rounded-xl border text-xs font-semibold flex items-center justify-center space-x-2 transition ${
+                selectedMode === 'all'
+                  ? 'bg-yellow-400 text-slate-950 border-yellow-300 shadow-sm font-bold'
+                  : 'bg-slate-50 dark:bg-[#070b14] border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300'
+              }`}
+            >
+              <Sparkles className="w-4 h-4 text-slate-950" />
+              <span>Full Package (Cards + Quiz)</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setSelectedMode('flashcards_only')}
+              className={`p-3 rounded-xl border text-xs font-semibold flex items-center justify-center space-x-2 transition ${
+                selectedMode === 'flashcards_only'
+                  ? 'bg-yellow-400 text-slate-950 border-yellow-300 shadow-sm font-bold'
+                  : 'bg-slate-50 dark:bg-[#070b14] border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300'
+              }`}
+            >
+              <Layers className="w-4 h-4 text-slate-950" />
+              <span>Flashcards Only</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setSelectedMode('quiz_only')}
+              className={`p-3 rounded-xl border text-xs font-semibold flex items-center justify-center space-x-2 transition ${
+                selectedMode === 'quiz_only'
+                  ? 'bg-yellow-400 text-slate-950 border-yellow-300 shadow-sm font-bold'
+                  : 'bg-slate-50 dark:bg-[#070b14] border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300'
+              }`}
+            >
+              <HelpCircle className="w-4 h-4 text-slate-950" />
+              <span>Quiz Only</span>
+            </button>
+          </div>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
@@ -144,12 +194,14 @@ export const InputSection: React.FC<InputSectionProps> = ({ onSubmit, isLoading 
               {isLoading ? (
                 <>
                   <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                  <span>Generating Study Suite...</span>
+                  <span>Generating Output...</span>
                 </>
               ) : (
                 <>
                   <Zap className="w-3.5 h-3.5 fill-slate-950" />
-                  <span>Generate Study Suite</span>
+                  <span>
+                    Generate {selectedMode === 'flashcards_only' ? 'Flashcards' : selectedMode === 'quiz_only' ? 'Quiz' : 'Full Suite'}
+                  </span>
                 </>
               )}
             </button>

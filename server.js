@@ -33,7 +33,7 @@ app.get('/api/health', (req, res) => {
  */
 app.post('/api/generate', async (req, res) => {
   try {
-    const { prompt, simulateFailure, forcedErrorType } = req.body;
+    const { prompt, generationMode = 'all', simulateFailure, forcedErrorType } = req.body;
 
     if (!prompt || typeof prompt !== 'string') {
       return res.status(400).json({
@@ -73,6 +73,8 @@ app.post('/api/generate', async (req, res) => {
 
     const systemInstruction = `You are MindForge AI, an expert educational system.
 Generate a structured JSON study package for the requested topic/notes.
+Requested Generation Mode: "${generationMode}" (Options: 'all', 'flashcards_only', 'quiz_only').
+
 Your output MUST be strictly valid JSON matching this structure:
 {
   "title": "Short descriptive topic title",
@@ -87,7 +89,12 @@ Your output MUST be strictly valid JSON matching this structure:
       "answer": "Comprehensive yet digestible answer",
       "hint": "Subtle hint for self-testing",
       "category": "Sub-topic",
-      "difficulty": "Easy" | "Medium" | "Hard"
+      "difficulty": "Easy" | "Medium" | "Hard",
+      "quickCheck": {
+        "question": "Quick self-check question testing understanding of this card",
+        "options": ["Option A", "Option B", "Option C"],
+        "correctIndex": 0
+      }
     }
   ],
   "quiz": [
@@ -109,7 +116,10 @@ Your output MUST be strictly valid JSON matching this structure:
   ]
 }
 
-Ensure at least 5 flashcards, 4 quiz questions (each with 4 options), and 4 key concepts. Return ONLY raw JSON with no conversational text or preamble.`;
+If mode is 'flashcards_only', populate flashcards heavily (at least 7 cards with quickCheck objects) and return empty array [] for quiz.
+If mode is 'quiz_only', populate quiz heavily (at least 7 questions) and return empty array [] for flashcards.
+If mode is 'all', populate at least 5 flashcards (with quickCheck objects), 4 quiz questions, and 4 key concepts.
+Return ONLY raw JSON with no preamble.`;
 
     const requestBody = {
       model: modelName,

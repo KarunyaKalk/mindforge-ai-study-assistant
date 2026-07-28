@@ -1,5 +1,5 @@
 import { RawStudySetSchema } from './schema';
-import { StudySet, FailureDetail } from '../types/study';
+import { StudySet, FailureDetail, GenerationMode } from '../types/study';
 import { generateMockStudySet, generateMockRefinedSet } from './mockGenerator';
 
 /**
@@ -54,6 +54,7 @@ let activeRequestId = 0;
 export async function generateStudySet(
   prompt: string,
   options?: {
+    generationMode?: GenerationMode;
     signal?: AbortSignal;
     simulateFailure?: boolean;
     forcedErrorType?: string;
@@ -68,6 +69,7 @@ export async function generateStudySet(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         prompt,
+        generationMode: options?.generationMode || 'all',
         simulateFailure: options?.simulateFailure,
         forcedErrorType: options?.forcedErrorType,
       }),

@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { StudySet, FailureDetail, QuizResult } from '../types/study';
+import { StudySet, FailureDetail, QuizResult, GenerationMode } from '../types/study';
 import { generateStudySet, refineStudySet } from '../services/aiService';
 import { useLocalStorage } from './useLocalStorage';
 
@@ -35,7 +35,7 @@ export function useStudySession() {
   // Generate new Study Set
   const createStudySet = async (
     prompt: string,
-    options?: { simulateFailure?: boolean; forcedErrorType?: string }
+    options?: { generationMode?: GenerationMode; simulateFailure?: boolean; forcedErrorType?: string }
   ) => {
     // Cancel previous request if still pending
     if (abortControllerRef.current) {
@@ -50,6 +50,7 @@ export function useStudySession() {
 
     try {
       const result = await generateStudySet(prompt, {
+        generationMode: options?.generationMode,
         signal: controller.signal,
         simulateFailure: options?.simulateFailure,
         forcedErrorType: options?.forcedErrorType,

@@ -1,5 +1,13 @@
 export type DifficultyLevel = 'Beginner' | 'Intermediate' | 'Advanced' | 'Easy' | 'Medium' | 'Hard';
 
+export type GenerationMode = 'all' | 'flashcards_only' | 'quiz_only';
+
+export interface QuickCheck {
+  question: string;
+  options: string[];
+  correctIndex: number;
+}
+
 export interface Flashcard {
   id: string;
   question: string;
@@ -9,6 +17,7 @@ export interface Flashcard {
   difficulty?: 'Easy' | 'Medium' | 'Hard';
   isMastered?: boolean;
   needsReview?: boolean;
+  quickCheck?: QuickCheck;
 }
 
 export interface QuizQuestion {
@@ -36,6 +45,7 @@ export interface StudySet {
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   category: string;
   estimatedTimeMinutes: number;
+  generationMode?: GenerationMode;
   flashcards: Flashcard[];
   quiz: QuizQuestion[];
   keyConcepts: KeyConcept[];
