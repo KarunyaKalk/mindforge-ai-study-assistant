@@ -8,27 +8,41 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
+        sans: ['Inter', 'Geist', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Geist Mono', 'monospace'],
       },
       colors: {
-        navy: {
-          50: '#f0f4f9',
-          100: '#e1e8f2',
-          200: '#c3d2e5',
-          300: '#95b1d3',
-          400: '#608ab9',
-          500: '#3c699c',
-          600: '#2b507f',
-          700: '#234168',
-          800: '#1b3252',
-          900: '#0f172a',
-          950: '#070b14',
+        // Linear/Vercel Exact Dark Theme Palette
+        canvas: {
+          dark: '#090B11',
+          light: '#f8fafc',
         },
+        sub: {
+          dark: '#111827',
+          light: '#f1f5f9',
+        },
+        card: {
+          dark: '#161B26',
+          light: '#ffffff',
+        },
+        accent: {
+          DEFAULT: '#F4C430',
+          hover: '#E5B826',
+          light: 'rgba(244, 196, 48, 0.12)',
+        },
+        success: '#22C55E',
+        danger: '#EF4444',
+        warning: '#F59E0B',
+        info: '#3B82F6',
       },
-      animation: {
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      boxShadow: {
+        'subtle': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        'card': '0 4px 20px -2px rgba(0, 0, 0, 0.25)',
+        'card-light': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
       },
+      borderRadius: {
+        'card': '16px',
+      }
     },
   },
   plugins: [],

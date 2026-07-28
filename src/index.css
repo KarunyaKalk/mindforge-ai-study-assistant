@@ -3,40 +3,43 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --bg-light: #f8fafc;
-    --surface-light: #ffffff;
-    --navy-dark: #090d16;
-    --navy-surface: #0f172a;
-    --navy-card: #1e293b;
-    --yellow-accent: #facc15;
-    --yellow-hover: #eab308;
-  }
-
   body {
-    @apply bg-slate-100 text-slate-900 dark:bg-[#070b14] dark:text-slate-100 font-sans antialiased min-h-screen selection:bg-yellow-400 selection:text-slate-950 transition-colors duration-150;
+    @apply bg-[#f8fafc] text-slate-900 dark:bg-[#090B11] dark:text-[#F3F4F6] font-sans antialiased min-h-screen selection:bg-[#F4C430] selection:text-slate-950 transition-colors duration-150;
     letter-spacing: -0.011em;
   }
-
-  h1, h2, h3, h4, h5, h6 {
-    letter-spacing: -0.025em;
-  }
 }
 
-/* Linear-style subtle card borders & shadows */
-.sde-card {
-  @apply bg-white dark:bg-[#0f172a] border border-slate-200/80 dark:border-slate-800/80 rounded-2xl shadow-sm hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200;
+/* Linear / Vercel Premium Components & Utility Classes */
+.saas-card {
+  @apply bg-white dark:bg-[#161B26] border border-slate-200/80 dark:border-white/[0.06] rounded-[16px] p-6 shadow-sm dark:shadow-card transition-all duration-200;
 }
 
-.sde-button-primary {
-  @apply bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm transition active:scale-[0.98] border border-yellow-300 flex items-center justify-center space-x-2;
+.saas-button-primary {
+  @apply h-12 bg-[#F4C430] hover:bg-[#E5B826] text-slate-950 font-bold text-[14px] px-6 rounded-xl transition-all duration-150 flex items-center justify-center space-x-2 active:scale-[0.98] shadow-sm;
 }
 
-.sde-button-secondary {
-  @apply bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs px-4 py-2.5 rounded-xl transition border border-slate-200 dark:border-slate-700 flex items-center justify-center space-x-2;
+.saas-button-secondary {
+  @apply h-12 bg-slate-100 dark:bg-[#111827] hover:bg-slate-200 dark:hover:bg-[#1f293d] text-slate-800 dark:text-slate-200 font-semibold text-[14px] px-6 rounded-xl border border-slate-200/80 dark:border-white/[0.08] transition-all duration-150 flex items-center justify-center space-x-2 active:scale-[0.98];
 }
 
-/* 3D Flip Card CSS Utilities */
+.saas-button-ghost {
+  @apply h-10 hover:bg-slate-100 dark:hover:bg-[#161B26] text-slate-600 dark:text-white/60 hover:text-slate-900 dark:hover:text-white text-[13px] font-medium px-3 rounded-lg transition-all flex items-center justify-center space-x-1.5;
+}
+
+/* Segmented Control Tab Style */
+.segmented-tab {
+  @apply px-4 py-2 text-[13px] font-semibold rounded-lg transition-all flex items-center space-x-2;
+}
+
+.segmented-tab-active {
+  @apply bg-white dark:bg-[#161B26] text-slate-950 dark:text-white shadow-sm border border-slate-200/80 dark:border-white/[0.08];
+}
+
+.segmented-tab-inactive {
+  @apply text-slate-500 dark:text-white/60 hover:text-slate-900 dark:hover:text-white;
+}
+
+/* 3D Flip Card CSS */
 .perspective-1000 {
   perspective: 1000px;
 }
@@ -49,7 +52,7 @@
   backface-visibility: hidden;
 }
 
-/* Clean Custom Scrollbars */
+/* Custom Minimal Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -60,9 +63,9 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 dark:bg-slate-800 rounded-full;
+  @apply bg-slate-300 dark:bg-[#1f293d] rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400 dark:bg-slate-700;
+  @apply bg-slate-400 dark:bg-[#374151];
 }

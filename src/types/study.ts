@@ -2,6 +2,10 @@ export type DifficultyLevel = 'Beginner' | 'Intermediate' | 'Advanced' | 'Easy' 
 
 export type GenerationMode = 'all' | 'flashcards_only' | 'quiz_only';
 
+export type ActiveTabType = 'flashcards' | 'quiz' | 'glossary' | 'notes' | 'interview' | 'case_studies';
+
+export type SRSGrade = 'again' | 'hard' | 'good' | 'easy';
+
 export interface QuickCheck {
   question: string;
   options: string[];
@@ -17,6 +21,7 @@ export interface Flashcard {
   difficulty?: 'Easy' | 'Medium' | 'Hard';
   isMastered?: boolean;
   needsReview?: boolean;
+  userRating?: SRSGrade;
   quickCheck?: QuickCheck;
 }
 
@@ -36,6 +41,29 @@ export interface KeyConcept {
   importance?: 'Core Concept' | 'Key Detail' | 'Advanced Concept';
 }
 
+export interface StudyNote {
+  id: string;
+  title: string;
+  content: string;
+  tags: string[];
+}
+
+export interface InterviewQuestion {
+  id: string;
+  question: string;
+  idealAnswer: string;
+  followUp: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+}
+
+export interface CaseStudy {
+  id: string;
+  companyOrScenario: string;
+  problemStatement: string;
+  architecturalSolution: string;
+  keyTakeaway: string;
+}
+
 export interface StudySet {
   id: string;
   createdAt: string;
@@ -49,6 +77,9 @@ export interface StudySet {
   flashcards: Flashcard[];
   quiz: QuizQuestion[];
   keyConcepts: KeyConcept[];
+  notes?: StudyNote[];
+  interviewPrep?: InterviewQuestion[];
+  caseStudies?: CaseStudy[];
 }
 
 export interface QuizResult {

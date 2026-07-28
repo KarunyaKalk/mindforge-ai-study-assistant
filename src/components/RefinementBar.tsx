@@ -23,35 +23,35 @@ export const RefinementBar: React.FC<RefinementBarProps> = ({ onRefine, isRefini
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white dark:bg-[#0f172a] text-slate-900 dark:text-white rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors">
-      <div className="flex items-center space-x-2 text-xs font-mono font-bold text-yellow-600 dark:text-yellow-400 mb-2">
-        <SlidersHorizontal className="w-3.5 h-3.5 text-yellow-500" />
+    <div className="w-full max-w-[1280px] mx-auto saas-card p-6 border border-slate-200/80 dark:border-white/[0.06]">
+      <div className="flex items-center space-x-2 text-xs font-mono font-bold text-[#F4C430] mb-3">
+        <SlidersHorizontal className="w-4 h-4 text-[#F4C430]" />
         <span>Refinement Engine (Update Active Study Suite)</span>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex items-center space-x-2">
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
         <input
           type="text"
           value={refinementInput}
           onChange={(e) => setRefinementInput(e.target.value)}
           placeholder="e.g. 'Add 3 flashcards on memory leaks'..."
           disabled={isRefining}
-          className="flex-1 px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-[#070b14] border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-yellow-400 transition"
+          className="flex-1 h-12 px-4 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.08] text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-[#F4C430] transition"
         />
 
         <button
           type="submit"
           disabled={isRefining || !refinementInput.trim()}
-          className="sde-button-primary shrink-0"
+          className="saas-button-primary shrink-0"
         >
           {isRefining ? (
             <>
-              <RefreshCw className="w-3.5 h-3.5 animate-spin text-slate-950" />
+              <RefreshCw className="w-4 h-4 animate-spin text-slate-950" />
               <span>Refining...</span>
             </>
           ) : (
             <>
-              <Sparkles className="w-3.5 h-3.5 text-slate-950" />
+              <Sparkles className="w-4 h-4 text-slate-950" />
               <span>Apply Refinement</span>
             </>
           )}
@@ -59,14 +59,14 @@ export const RefinementBar: React.FC<RefinementBarProps> = ({ onRefine, isRefini
       </form>
 
       {/* Preset Refinement Pills */}
-      <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-[11px]">
+      <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-slate-100 dark:border-white/[0.06] text-xs">
         <span className="text-slate-400 font-mono">Quick Refine:</span>
         {SAMPLE_REFINEMENTS.map((text, i) => (
           <button
             key={i}
             onClick={() => onRefine(text)}
             disabled={isRefining}
-            className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#070b14] hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 transition"
+            className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[#111827] hover:bg-slate-200 dark:hover:bg-[#1f293d] text-slate-700 dark:text-white/80 border border-slate-200/80 dark:border-white/[0.08] transition"
           >
             + {text}
           </button>
