@@ -4,7 +4,7 @@
 
 ---
 
-## 🌟 Overview & Features
+##  Overview & Features
 
 **MindForge AI** takes free-form text input (lecture notes, raw articles, code snippets, or study topics), routes it through a secure backend proxy to an LLM, and transforms the response into a structured learning suite:
 
@@ -17,7 +17,7 @@
 
 ---
 
-## 🏗️ Architecture & Design Decisions
+##  Architecture & Design Decisions
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -56,7 +56,7 @@
 
 ---
 
-## 🛡️ Handling Bad AI Output (Core Requirement)
+##  Handling Bad AI Output (Core Requirement)
 
 Handling non-deterministic LLM output is the core evaluation criteria of this assignment:
 
@@ -70,7 +70,7 @@ Handling non-deterministic LLM output is the core evaluation criteria of this as
 
 ---
 
-## 🚀 Quick Start & Installation
+##  Quick Start & Installation
 
 ### Prerequisites
 - **Node.js**: v18.0.0 or higher
@@ -97,7 +97,7 @@ Handling non-deterministic LLM output is the core evaluation criteria of this as
 
 ---
 
-## 🤖 AI Usage Note (Transparency Statement)
+##  AI Usage Note (Transparency Statement)
 
 Per the assignment instructions:
 - **AI Assistants Used**: Antigravity AI coding assistant and Claude 3.5 Sonnet for scaffolding component boilerplate, drafting Zod schemas, and writing initial CSS utility classes.
@@ -105,7 +105,7 @@ Per the assignment instructions:
 
 ---
 
-## ⏱️ Time Spent Breakdown (~8 Hours Total Target)
+##  Time Spent Breakdown (~8 Hours Total Target)
 
 - **Planning & Architecture Design**: 1.5 hours
 - **Backend Express Proxy & API Key Security**: 1 hour
@@ -116,7 +116,7 @@ Per the assignment instructions:
 
 ---
 
-## 🔮 Future Scope & Improvements
+##  Future Scope & Improvements
 - WebSockets for true real-time token streaming.
 - Export deck to Anki (`.apkg`) format or PDF study guide.
 - User authentication and multi-device Sync.
